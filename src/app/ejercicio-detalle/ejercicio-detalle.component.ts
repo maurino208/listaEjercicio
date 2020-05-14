@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Ejercicio } from '../ejercicio';
+import { ActivatedRoute } from '@angular/router';
+import { EjercicioService } from '../ejercicio.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-ejercicio-detalle',
@@ -8,11 +11,23 @@ import { Ejercicio } from '../ejercicio';
 })
 export class EjercicioDetalleComponent implements OnInit {
 
-  @Input() ejercicio:Ejercicio;
+  ejercicio:Ejercicio;
 
-  constructor() { }
+  constructor(
+              private route:ActivatedRoute,
+              private ejercicioService:EjercicioService,
+              private location:Location) { }
 
   ngOnInit(): void {
+    this.getEjercicio();
   }
 
+  getEjercicio():void{
+    const id=+this.route.snapshot.paramMap.get('id');
+    this.ejercicioService.getEjercicio(id).subscribe(ejercicio=>this.ejercicio=ejercicio);
+  }
+
+  goBack():void{
+    this.location.back();
+  }
 }

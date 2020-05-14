@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Ejercicio} from '../ejercicio'
-import {EJERCICIO} from '../collection-ejercicios'
+import {Ejercicio} from '../ejercicio';
+import {EjercicioService} from '../ejercicio.service'
+
+
 
 @Component({
   selector: 'app-ejercicios',
@@ -9,12 +11,20 @@ import {EJERCICIO} from '../collection-ejercicios'
 })
 export class EjerciciosComponent implements OnInit {
 
-  ejercicios=EJERCICIO;
+  ejercicios:Ejercicio[];
   ejercicioSeleccionado:Ejercicio;
 
-  constructor() { }
+  constructor(private ejercicioService:EjercicioService) {
+    console.log("----Componente Ejercicio CREADO----");
+  }
+
+  getEjercicios():void{
+    this.ejercicioService.getEjercicios().subscribe(ejercicios=>this.ejercicios=ejercicios);
+  }
 
   ngOnInit(): void {
+    console.log("----Componente Ejercicios[ngOnInit]----")
+    this.getEjercicios();
   }
 
   onSelectEjercicio(ejercicio:Ejercicio):void{
